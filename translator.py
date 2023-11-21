@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import openai
+import argparse
 
 openai.api_key = 'YOUR_API_KEY'
 
@@ -19,7 +20,7 @@ def translate_html(input_html, target_language='es'):
 
     for tag in soup.find_all():
         if tag.name in ['style', 'script']:
-            # Skip the contents of style and script tags
+            # Пропускаем содержимое тегов style и script
             continue
 
         if tag.string:
@@ -30,18 +31,24 @@ def translate_html(input_html, target_language='es'):
     translated_html = str(soup)
     return translated_html
 
-if __name__ == "__main__":
-    input_file = 'index.html'
-    output_file = 'translated_index.html'
-    target_language = 'es'  # Enter the desired language here
+def main():
+    parser = argparse.ArgumentParser(description='Translate HTML content.')
+    parser.add_argument('--input_file', type=str, default='index.html', help='Path to the input HTML file')
+    parser.add_argument('--output_file', type=str, default='translated_index.html', help='Path to the output HTML file')
+    parser.add_argument('--target_language', type=str, default='es', help='Target language for translation')
 
-    with open(input_file, 'r', encoding='utf-8') as file:
+    args = parser.parse_args()
+
+    with open(args.input_file, 'r', encoding='utf-8') as file:
         html_content = file.read()
 
-    translated_html = translate_html(html_content, target_language)
+    translated_html = translate_html(html_content, args.target_language)
 
-    with open(output_file, 'w', encoding='utf-8') as file:
+    with open(args.output_file, 'w', encoding='utf-8') as file:
         file.write(translated_html)
 
-    print(f'Translation completed. Translated HTML saved to {output_file}')
+    print(f'Translation completed. Translated HTML saved to {args.output_file}')
+
+if __name__ == "__main__":
+    main()
     
