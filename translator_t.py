@@ -6,7 +6,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-openai.api_key = ''
+openai.api_key = 'API_KEY_HERE'
 
 def translate_text(text, target_language):
     prompt = f"Translate the following English text to {target_language}: '{text}'"
